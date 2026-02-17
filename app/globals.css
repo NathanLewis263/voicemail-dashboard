@@ -1,26 +1,202 @@
 @import "tailwindcss";
 
+@theme {
+  /* Typography */
+  --font-sans: var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: var(--font-serif), "Instrument Serif", Georgia, serif;
+
+  /* Core palette */
+  --color-vm-bg: #f7f5f2;
+  --color-vm-surface: #ffffff;
+  --color-vm-sidebar: #1a1814;
+  --color-vm-sidebar-hover: #2a2824;
+
+  /* Primary — Deep teal */
+  --color-vm-primary: #1a5c54;
+  --color-vm-primary-light: #e6f0ee;
+
+  /* Accent — Warm amber */
+  --color-vm-accent: #c8956c;
+  --color-vm-accent-light: #faf0e6;
+
+  /* Urgency — Rose */
+  --color-vm-urgent: #c44536;
+  --color-vm-urgent-light: #fde8e5;
+
+  /* Warning — Amber */
+  --color-vm-warn: #d4953b;
+  --color-vm-warn-light: #fef3e0;
+
+  /* Calm/Success — Sage */
+  --color-vm-calm: #5a8a72;
+  --color-vm-calm-light: #e8f3ed;
+
+  /* Text */
+  --color-vm-text: #1c1917;
+  --color-vm-text-secondary: #78716c;
+  --color-vm-text-tertiary: #a8a29e;
+
+  /* Borders */
+  --color-vm-border: #e7e5e4;
+  --color-vm-border-light: #f0eeeb;
+
+  /* Animations */
+  --animate-fade-in-up: fadeInUp 0.5s ease-out both;
+  --animate-fade-in: fadeIn 0.4s ease-out both;
+  --animate-slide-in-left: slideInLeft 0.35s ease-out both;
+  --animate-pulse-glow: pulseGlow 2s ease-in-out infinite;
+}
+
+/* shadcn compatibility variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 35 18% 96%;
+  --foreground: 20 14% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14% 10%;
+  --primary: 173 54% 23%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 35 18% 94%;
+  --secondary-foreground: 20 14% 10%;
+  --muted: 35 12% 92%;
+  --muted-foreground: 25 6% 45%;
+  --accent: 27 44% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 7 55% 49%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 30 9% 90%;
+  --input: 30 9% 90%;
+  --ring: 173 54% 23%;
+  --radius: 0.75rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-vm-bg text-vm-text font-sans antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d6d3d1;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a8a29e;
+  }
+}
+
+/* shadcn utility compat layer */
+@layer utilities {
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+  .bg-card {
+    background-color: hsl(var(--card));
+  }
+  .text-card-foreground {
+    color: hsl(var(--card-foreground));
+  }
+  .bg-popover {
+    background-color: hsl(var(--popover));
+  }
+  .text-popover-foreground {
+    color: hsl(var(--popover-foreground));
+  }
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+  .text-primary-foreground {
+    color: hsl(var(--primary-foreground));
+  }
+  .text-primary {
+    color: hsl(var(--primary));
+  }
+  .bg-secondary {
+    background-color: hsl(var(--secondary));
+  }
+  .text-secondary-foreground {
+    color: hsl(var(--secondary-foreground));
+  }
+  .bg-muted {
+    background-color: hsl(var(--muted));
+  }
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+  }
+  .bg-accent {
+    background-color: hsl(var(--accent));
+  }
+  .text-accent-foreground {
+    color: hsl(var(--accent-foreground));
+  }
+  .bg-destructive {
+    background-color: hsl(var(--destructive));
+  }
+  .text-destructive-foreground {
+    color: hsl(var(--destructive-foreground));
+  }
+  .border-input {
+    border-color: hsl(var(--input));
+  }
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+  .ring-ring {
+    --tw-ring-color: hsl(var(--ring));
+  }
 }
