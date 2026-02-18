@@ -60,3 +60,84 @@ export const mockVoicemails: Voicemail[] = [
     audioUrl: "/audio/5.mp3",
   },
 ];
+
+export interface Patient {
+  id: string;
+  name: string;
+  dateOfBirth: string;
+  gender: "Male" | "Female" | "Other";
+  phoneNumber: string;
+  email: string;
+  medicalHistory: string[];
+  upcomingAppointments: {
+    id: string;
+    date: string;
+    type: string;
+    doctor: string;
+  }[];
+}
+
+export const mockPatients: Patient[] = [
+  {
+    id: "p1",
+    name: "Sarah Jenkins",
+    dateOfBirth: "1985-04-12",
+    gender: "Female",
+    phoneNumber: "0411 123 456",
+    email: "sarah.jenkins@example.com",
+    medicalHistory: ["Asthma", "Seasonal Allergies", "Hypertension"],
+    upcomingAppointments: [
+      {
+        id: "a1",
+        date: "2023-11-05T09:00:00",
+        type: "General Checkup",
+        doctor: "Dr. Smith",
+      },
+    ],
+  },
+  {
+    id: "p2",
+    name: "Michael Chang",
+    dateOfBirth: "1980-06-15",
+    gender: "Male",
+    phoneNumber: "0498 765 432",
+    email: "m.chang@example.com",
+    medicalHistory: ["Type 2 Diabetes", "High Cholesterol", "Hypertension"],
+    upcomingAppointments: [],
+  },
+  // Example of multiple patients sharing a phone number (e.g., parent/child)
+  {
+    id: "p3",
+    name: "Emily Clark",
+    dateOfBirth: "1992-09-23",
+    gender: "Female",
+    phoneNumber: "0433 234 567",
+    email: "emily.clark@example.com",
+    medicalHistory: ["Migraines"],
+    upcomingAppointments: [
+      {
+        id: "a2",
+        date: "2023-10-31T14:00:00",
+        type: "Consultation",
+        doctor: "Dr. Lee",
+      },
+    ],
+  },
+  {
+    id: "p4",
+    name: "Noah Clark",
+    dateOfBirth: "2017-02-10",
+    gender: "Male",
+    phoneNumber: "0433 234 567", // Shared phone number
+    email: "emily.clark@example.com", // Parent email
+    medicalHistory: ["Eczema", "Peanut Allergy"],
+    upcomingAppointments: [
+      {
+        id: "a3",
+        date: "2023-11-15T10:30:00",
+        type: "Vaccination",
+        doctor: "Nurse Joy",
+      },
+    ],
+  },
+];

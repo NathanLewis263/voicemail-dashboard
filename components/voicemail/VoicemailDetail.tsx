@@ -1,6 +1,5 @@
 "use client";
 
-import { Voicemail } from "@/lib/data";
 import {
   Phone,
   Calendar,
@@ -19,6 +18,8 @@ import { useVoicemailAnalysis } from "@/hooks/useVoicemailAnalysis";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
+import { Voicemail, mockPatients, Patient } from "@/lib/data";
+import { PatientProfileModal } from "@/components/patient/PatientProfileModal";
 
 interface VoicemailDetailProps {
   voicemail: Voicemail | null;
@@ -36,6 +37,10 @@ export function VoicemailDetail({
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+
+  // Patient Profile State
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [matchedPatients, setMatchedPatients] = useState<Patient[]>([]);
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -71,6 +76,21 @@ export function VoicemailDetail({
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const handleOpenProfile = () => {
+    if (!voicemail) return;
+
+    // Clean phone numbers for comparison (remove spaces and non-digits)
+    const normalizeNumber = (num: string) => num.replace(/\D/g, "");
+    const currentNumber = normalizeNumber(voicemail.callerNumber);
+
+    const matches = mockPatients.filter(
+      (p) => normalizeNumber(p.phoneNumber) === currentNumber,
+    );
+
+    setMatchedPatients(matches);
+    setIsProfileOpen(true);
   };
 
   // ── Empty state ──
@@ -134,7 +154,7 @@ export function VoicemailDetail({
               <span className="text-vm-border">·</span>
               <Clock className="h-3 w-3 flex-shrink-0" />
               <span>
-                {new Date(voicemail.timestamp).toLocaleString([], {
+                {new Date(voicemail.timestamp).toLocaleString("en-US", {
                   month: "short",
                   day: "numeric",
                   hour: "numeric",
@@ -325,9 +345,9 @@ export function VoicemailDetail({
                 Quick Actions
               </h3>
               <div className="space-y-2">
-                <button className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-md border border-vm-border text-xs font-medium text-vm-text hover:bg-vm-card hover:border-vm-primary/30 transition-all group">
-                  <div className="w-6 h-6 rounded bg-vm-card flex items-center justify-center group-hover:bg-vm-primary/15 transition-colors">
-                    <Phone className="h-3 w-3 text-vm-text-tertiary group-hover:text-vm-primary transition-colors" />
+                <button className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-md border border-vm-border text-xs font-medium text-vm-text hover:bg-vm-card hover:border-vm-accent/30 transition-all group">
+                  <div className="w-6 h-6 rounded bg-vm-card flex items-center justify-center group-hover:bg-vm-accent-light transition-colors">
+                    <Phone className="h-3 w-3 text-vm-text-tertiary group-hover:text-vm-accent transition-colors" />
                   </div>
                   Call Back
                 </button>
@@ -343,9 +363,7 @@ export function VoicemailDetail({
                   Schedule Appointment
                 </button>
                 <button
-                  onClick={() => {
-                    alert("Opening appointment scheduler...");
-                  }}
+                  onClick={handleOpenProfile}
                   className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-md border border-vm-border text-xs font-medium text-vm-text hover:bg-vm-card hover:border-vm-accent/30 transition-all group"
                 >
                   <div className="w-6 h-6 rounded bg-vm-card flex items-center justify-center group-hover:bg-vm-accent-light transition-colors">
@@ -353,7 +371,6 @@ export function VoicemailDetail({
                   </div>
                   View Patient Profile
                 </button>
-
               </div>
             </div>
 
@@ -372,14 +389,11 @@ export function VoicemailDetail({
                 <div className="border-t border-vm-border-light pt-2.5 flex justify-between">
                   <dt className="text-vm-text-tertiary">Received</dt>
                   <dd className="text-vm-text font-medium">
-                    {new Date(voicemail.timestamp).toLocaleDateString(
-                      undefined,
-                      {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      },
-                    )}
+                    {new Date(voicemail.timestamp).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </dd>
                 </div>
                 <div className="border-t border-vm-border-light pt-2.5 flex justify-between">
@@ -393,6 +407,14 @@ export function VoicemailDetail({
           </div>
         </div>
       </div>
+
+      {/* Patient Profile Modal */}
+      <PatientProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        patients={matchedPatients}
+        suggestedPatientId={analysis?.suggestedPatientId || null}
+      />
     </div>
   );
 }

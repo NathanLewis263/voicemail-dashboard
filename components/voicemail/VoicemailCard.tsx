@@ -92,7 +92,7 @@ export function VoicemailCard({
           <span>{voicemail.duration}</span>
         </div>
         <span>
-          {new Date(voicemail.timestamp).toLocaleDateString([], {
+          {new Date(voicemail.timestamp).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
           })}
@@ -124,6 +124,14 @@ export function VoicemailCard({
             >
               {analysis.urgency}
             </span>
+            {analysis.confidence && (
+              <span
+                className="text-[10px] px-1.5 py-0.5 rounded bg-vm-surface border border-vm-border text-vm-text-secondary font-medium"
+                title="AI Confidence Score"
+              >
+                {analysis.confidence}%
+              </span>
+            )}
           </>
         ) : null}
       </div>
