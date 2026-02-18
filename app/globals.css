@@ -1,81 +1,86 @@
 @import "tailwindcss";
 
+/* Force light mode — disable automatic dark mode from system preference */
+
 @theme {
   /* Typography */
-  --font-sans: var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-display: var(--font-serif), "Instrument Serif", Georgia, serif;
+  --font-sans: var(--font-body), "Outfit", system-ui, sans-serif;
+  --font-display: var(--font-display-var), "Syne", system-ui, sans-serif;
 
-  /* Core palette */
-  --color-vm-bg: #f7f5f2;
-  --color-vm-surface: #ffffff;
-  --color-vm-sidebar: #1a1814;
-  --color-vm-sidebar-hover: #2a2824;
+  /* ── Core palette: Warm Clinical ── */
+  --color-vm-bg: #F5F4F1;
+  --color-vm-surface: #FFFFFF;
+  --color-vm-card: #FFFFFF;
+  --color-vm-elevated: #EEEDEA;
+  --color-vm-sidebar: #FFFFFF;
+  --color-vm-sidebar-hover: #F5F4F1;
 
-  /* Primary — Deep teal */
-  --color-vm-primary: #1a5c54;
-  --color-vm-primary-light: #e6f0ee;
+  /* Primary — Indigo */
+  --color-vm-primary: #5B5BD6;
+  --color-vm-primary-light: #EEEDFF;
 
   /* Accent — Warm amber */
-  --color-vm-accent: #c8956c;
-  --color-vm-accent-light: #faf0e6;
+  --color-vm-accent: #C27818;
+  --color-vm-accent-light: #FFF7ED;
 
-  /* Urgency — Rose */
-  --color-vm-urgent: #c44536;
-  --color-vm-urgent-light: #fde8e5;
+  /* Urgency — Red */
+  --color-vm-urgent: #CD2B31;
+  --color-vm-urgent-light: #FFF0F0;
 
   /* Warning — Amber */
-  --color-vm-warn: #d4953b;
-  --color-vm-warn-light: #fef3e0;
+  --color-vm-warn: #C27818;
+  --color-vm-warn-light: #FFF9EE;
 
-  /* Calm/Success — Sage */
-  --color-vm-calm: #5a8a72;
-  --color-vm-calm-light: #e8f3ed;
+  /* Calm/Success — Green */
+  --color-vm-calm: #18794E;
+  --color-vm-calm-light: #EEFBF4;
 
-  /* Text */
-  --color-vm-text: #1c1917;
-  --color-vm-text-secondary: #78716c;
-  --color-vm-text-tertiary: #a8a29e;
+  /* Text hierarchy */
+  --color-vm-text: #1C1C22;
+  --color-vm-text-secondary: #60606C;
+  --color-vm-text-tertiary: #9C9CAA;
 
   /* Borders */
-  --color-vm-border: #e7e5e4;
-  --color-vm-border-light: #f0eeeb;
+  --color-vm-border: #E4E3E0;
+  --color-vm-border-light: #EEEDE9;
 
-  /* Animations */
-  --animate-fade-in-up: fadeInUp 0.5s ease-out both;
-  --animate-fade-in: fadeIn 0.4s ease-out both;
-  --animate-slide-in-left: slideInLeft 0.35s ease-out both;
+  /* ── Animations ── */
+  --animate-fade-in-up: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fadeIn 0.3s ease-out both;
+  --animate-slide-in-left: slideInLeft 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-pulse-glow: pulseGlow 2s ease-in-out infinite;
 }
 
 /* shadcn compatibility variables */
 :root {
-  --background: 35 18% 96%;
-  --foreground: 20 14% 10%;
+  color-scheme: light;
+  --background: 40 10% 96%;
+  --foreground: 240 12% 12%;
   --card: 0 0% 100%;
-  --card-foreground: 20 14% 10%;
+  --card-foreground: 240 12% 12%;
   --popover: 0 0% 100%;
-  --popover-foreground: 20 14% 10%;
-  --primary: 173 54% 23%;
+  --popover-foreground: 240 12% 12%;
+  --primary: 240 56% 60%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 35 18% 94%;
-  --secondary-foreground: 20 14% 10%;
-  --muted: 35 12% 92%;
-  --muted-foreground: 25 6% 45%;
-  --accent: 27 44% 60%;
+  --secondary: 40 10% 93%;
+  --secondary-foreground: 240 12% 12%;
+  --muted: 40 10% 93%;
+  --muted-foreground: 240 5% 40%;
+  --accent: 30 74% 43%;
   --accent-foreground: 0 0% 100%;
-  --destructive: 7 55% 49%;
+  --destructive: 357 68% 49%;
   --destructive-foreground: 0 0% 100%;
-  --border: 30 9% 90%;
-  --input: 30 9% 90%;
-  --ring: 173 54% 23%;
-  --radius: 0.75rem;
+  --border: 37 7% 89%;
+  --input: 37 7% 89%;
+  --ring: 240 56% 60%;
+  --radius: 0.5rem;
 }
 
-/* Keyframes */
+/* ── Keyframes ── */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -95,7 +100,7 @@
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-16px);
+    transform: translateX(-10px);
   }
   to {
     opacity: 1;
@@ -109,7 +114,7 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.4;
+    opacity: 0.35;
   }
 }
 
@@ -118,7 +123,7 @@
     @apply bg-vm-bg text-vm-text font-sans antialiased;
   }
 
-  /* Custom scrollbar */
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -128,12 +133,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #d6d3d1;
+    background: #D4D3D0;
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #a8a29e;
+    background: #B4B3B0;
   }
 }
 
