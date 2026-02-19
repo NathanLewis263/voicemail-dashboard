@@ -18,7 +18,12 @@ import { useVoicemailAnalysis } from "@/hooks/useVoicemailAnalysis";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
-import { Voicemail, mockPatients, Patient } from "@/lib/data";
+import {
+  Voicemail,
+  mockPatients,
+  Patient,
+  mockAvailableSlots,
+} from "@/lib/data";
 import { PatientProfileModal } from "@/components/patient/PatientProfileModal";
 
 interface VoicemailDetailProps {
@@ -277,12 +282,101 @@ export function VoicemailDetail({
                   )}
 
                   {/* Suggested Action */}
+
                   <div className="bg-vm-calm-light border border-vm-calm/20 rounded-md px-4 py-3 flex items-start gap-3">
                     <ArrowRight className="h-3.5 w-3.5 text-vm-calm flex-shrink-0 mt-0.5" />
                     <span className="text-[13px] font-medium text-vm-text leading-snug">
                       {analysis.suggestedAction}
                     </span>
                   </div>
+
+                  {/* Suggested Appointments */}
+                  {(analysis.intent === "Appointment" ||
+                    analysis.intent === "Emergency") && (
+                    <div className="space-y-3 pt-2 border-t border-vm-border-light">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-[11px] font-semibold text-vm-text uppercase tracking-wider flex items-center gap-2">
+                          <Calendar className="h-3 w-3 text-vm-primary" />
+                          Suggested Slots
+                          {analysis.suggestedAppointmentType && (
+                            <span className="normal-case font-normal text-vm-text-tertiary">
+                              ({analysis.suggestedAppointmentType})
+                            </span>
+                          )}
+                        </h4>
+                      </div>
+                      <div className="grid gap-2">
+                        {mockAvailableSlots
+                          .filter((slot) => {
+                            // 1. Filter by Doctor if requested
+                            if (
+                              analysis.requestedDoctor &&
+                              !slot.doctor
+                                .toLowerCase()
+                                .includes(
+                                  analysis.requestedDoctor.toLowerCase(),
+                                )
+                            ) {
+                              return false;
+                            }
+
+                            // 2. Filter by Type (with fallback)
+                            return (
+                              !analysis.suggestedAppointmentType ||
+                              slot.type === analysis.suggestedAppointmentType ||
+                              slot.type === "Standard Consult"
+                            );
+                          })
+                          .slice(0, 3)
+                          .map((slot) => (
+                            <div
+                              key={slot.id}
+                              className="flex items-center justify-between bg-vm-bg p-2.5 rounded-md border border-vm-border-light group hover:border-vm-primary/30 transition-colors"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="text-center min-w-[40px]">
+                                  <div className="text-[10px] text-vm-text-tertiary uppercase leading-none mb-0.5">
+                                    {new Date(slot.date).toLocaleDateString(
+                                      "en-US",
+                                      { weekday: "short" },
+                                    )}
+                                  </div>
+                                  <div className="text-sm font-bold text-vm-text leading-none">
+                                    {new Date(slot.date).getDate()}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium text-vm-text">
+                                    {new Date(slot.date).toLocaleTimeString(
+                                      "en-US",
+                                      {
+                                        hour: "numeric",
+                                        minute: "2-digit",
+                                      },
+                                    )}
+                                  </div>
+                                  <div className="text-[11px] text-vm-text-secondary">
+                                    {slot.doctor} · {slot.type}
+                                  </div>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() =>
+                                  alert(
+                                    `Booked ${slot.type} with ${slot.doctor} for ${new Date(
+                                      slot.date,
+                                    ).toLocaleString()}`,
+                                  )
+                                }
+                                className="px-2.5 py-1.5 bg-vm-surface border border-vm-border rounded text-[11px] font-medium text-vm-text hover:bg-vm-primary hover:text-white hover:border-vm-primary transition-colors"
+                              >
+                                Book
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : null}
             </div>

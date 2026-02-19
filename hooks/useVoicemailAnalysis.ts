@@ -9,7 +9,9 @@ export interface AIAnalysis {
   confidence: number;
   keyDetails: { label: string; value: string }[];
   suggestedAction: string;
+  suggestedAppointmentType?: string | null;
   suggestedPatientId: string | null;
+  requestedDoctor?: string | null;
 }
 
 const normalizeNumber = (num: string) => num.replace(/\D/g, "");
@@ -58,7 +60,6 @@ export function useVoicemailListAnalysis(voicemails: Voicemail[]) {
     queries: voicemails.map((voicemail) => ({
       queryKey: ["analysis", voicemail.id],
       queryFn: async () => {
-        
         const potentialPatients = getPotentialPatients(voicemail.callerNumber);
 
         const { data } = await axios.post<AIAnalysis>("/api/analyze", {

@@ -30,12 +30,22 @@ const AnalysisSchema = z.object({
     }),
   ),
   suggestedAction: z.string(),
+  suggestedAppointmentType: z
+    .enum(["Short Consult", "Standard Consult", "Long Consult", "Urgent"])
+    .nullable()
+    .describe(
+      "If the intent is Appointment or Emergency, suggest the most appropriate appointment type based on the context. Short: Scripts, simple things. Standard: Normal checkups. Long: Multiple issues, mental health, complex. Urgent: Needs to be seen today.",
+    ),
   suggestedPatientId: z
     .string()
     .nullable()
     .describe(
       "ID of the most likely patient from the provided list, or null if none match clearly",
     ),
+  requestedDoctor: z
+    .string()
+    .nullable()
+    .describe("Name of the doctor requested by the caller, if any."),
 });
 
 export async function POST(req: Request) {
@@ -75,13 +85,17 @@ export async function POST(req: Request) {
       model: google("gemini-2.5-flash"),
       schema: AnalysisSchema,
       prompt: `
-        Analyze the following voicemail transcript and extract structured information. The calls are from Australia.
+        Analyze the following voicemail transcript and extract structured information. The calls are from Australia. Assume the current date is Friday, February 27th, 2026.
         
         Transcript: "${transcript}"
         
         ${patientsContext}
 
         Also provide a 'confidence' score (0-100) representing how confident you are in the intent classification and entity extraction.
+        
+        If the intent is related to booking an appointment or a health issue:
+        1. Suggest an appropriate appointment type (Short, Standard, Long, or Urgent) in 'suggestedAppointmentType'.
+        2. Extract any requested doctor name into 'requestedDoctor'.
       `,
     });
 
