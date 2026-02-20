@@ -48,7 +48,7 @@ export function PatientProfileModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col p-0 overflow-hidden gap-0">
+      <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col p-0 overflow-hidden gap-0 bg-vm-surface">
         <DialogHeader className="px-6 py-4 border-b border-vm-border bg-vm-surface">
           <DialogTitle className="font-display text-lg font-semibold text-vm-text">
             {patients.length === 0 ? "No Patient Found" : "Patient Profile"}
