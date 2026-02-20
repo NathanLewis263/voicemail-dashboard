@@ -6,6 +6,14 @@ An intelligent voicemail system prototype that transforms unstructured voicemail
 
 Watch the demo here: [https://youtu.be/\_MzZ3C5kQGg](https://youtu.be/_MzZ3C5kQGg)
 
+## Demo Website
+
+Visit the live demo here: [https://voicemail-dashboard.vercel.app/](https://voicemail-dashboard.vercel.app/)
+
+## Github Link
+
+Github Link: [https://github.com/NathanLewis263/voicemail-dashboard](https://github.com/NathanLewis263/voicemail-dashboard)
+
 ## Prerequisites
 
 You will need a Google Gemini API Key to run the AI analysis. The application uses the **Gemini 2.5 Flash** model.
