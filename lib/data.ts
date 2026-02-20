@@ -64,10 +64,10 @@ export const mockVoicemails: Voicemail[] = [
     callerName: "Emily Clark",
     callerNumber: "0433 234 567",
     timestamp: "2026-02-27T12:30:00",
-    duration: "0:45",
+    duration: "0:14",
     transcript:
       "Hi, it's Emily. I'm actually calling about my son Noah. He's developed a spotty rash on his torso and seems really lethargic. No fever yet, but I'm worried it might be chicken pox or something. Can we squeeze him in with Dr. Smith today? Thanks.",
-    audioUrl: "/audio/4.mp3", // Reusing Emily's audio for now
+    audioUrl: "/audio/6.mp3",
   },
 ];
 
